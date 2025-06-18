@@ -12,7 +12,7 @@ from googleapiclient.http import MediaFileUpload
 st.set_page_config(page_title="Order Collection App", layout="centered")
 os.makedirs("images", exist_ok=True)
 GOOGLE_SHEET_ID = "1hbUt6Qzk_uMeYRX_1bV11JRwFyOpOXU8GutmzKe6TWU"
-SERVICE_ACCOUNT_FILE = "streamlit-sheets.json"
+google_creds = st.secrets["google_creds"]
 DISTRIBUTOR_FILE = "distributors.csv"
 PRODUCT_FILE = "products.csv"
 USERS_FILE = "users.csv"
@@ -20,11 +20,11 @@ EMPLOYEE_MAPPING_FILE = "employee_distributor_map.csv"
 
 # ========== GOOGLE AUTH ==========
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name(SERVICE_ACCOUNT_FILE, scope)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(google_creds, scope)
 client = gspread.authorize(creds)
 sheet = client.open_by_key(GOOGLE_SHEET_ID).sheet1
 
-drive_service = build('drive', 'v3', credentials=creds)
+drive_service = build('drive', 'v3', creentials=creds)
 DRIVE_FOLDER_ID = "1b96TC89lrujL-JG66PZGhteTuQXSRVM0"
 
 # ========== USER LOGIN ==========
